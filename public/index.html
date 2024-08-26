@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .svg-container {
+            margin-top: 20px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>SVG Generator</h1>
+    <button id="generate-button">Generate SVG</button>
+    <div class="svg-container" id="svg-container">
+        <p>No SVG generated yet.</p>
+    </div>
+
+    <script>
+        document.getElementById('generate-button').addEventListener('click', async () => {
+            const container = document.getElementById('svg-container');
+            container.innerHTML = '<p>Loading...</p>';
+
+            try {
+                const response = await fetch('/api/generate-svg', {
+                    method: 'POST',
+                });
+                const data = await response.json();
+                container.innerHTML = data.svg || '<p>Error generating SVG.</p>';
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = '<p>Error generating SVG.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
