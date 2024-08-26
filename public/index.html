@@ -37,9 +37,9 @@
                 });
                 const data = await response.json();
 
-                // Clean up the response to remove the code block and unnecessary text
+                // Use a regular expression to remove all occurrences of backticks and `plaintext`
                 let svgBase64 = data.svg.trim();
-                svgBase64 = svgBase64.replace('```plaintext', '').replace('```', '').trim();
+                svgBase64 = svgBase64.replace(/```/g, '').replace(/plaintext/g, '').trim();
 
                 // Render the SVG as an image
                 container.innerHTML = `<img src="${svgBase64}" alt="Generated SVG" />`;
