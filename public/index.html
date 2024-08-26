@@ -36,7 +36,13 @@
                     method: 'POST',
                 });
                 const data = await response.json();
-                container.innerHTML = data.svg || '<p>Error generating SVG.</p>';
+
+                // Clean up the response to remove the code block and unnecessary text
+                let svgBase64 = data.svg.trim();
+                svgBase64 = svgBase64.replace('```plaintext', '').replace('```', '').trim();
+
+                // Render the SVG as an image
+                container.innerHTML = `<img src="${svgBase64}" alt="Generated SVG" />`;
             } catch (error) {
                 console.error('Error:', error);
                 container.innerHTML = '<p>Error generating SVG.</p>';
