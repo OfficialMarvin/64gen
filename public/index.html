@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Generator</title>
+    <title>64s</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,16 +20,17 @@
     </style>
 </head>
 <body>
-    <h1>SVG Generator</h1>
-    <button id="generate-button">Generate SVG</button>
+    <h1>64s Generator</h1>
+    <h2>64s are 64x64 ai created svg pieces stored in base64 on the blockchain</h2>
+    <button id="generate-button">Generate</button>
     <div class="svg-container" id="svg-container">
-        <p>No SVG generated yet.</p>
+        <p>:)</p>
     </div>
 
     <script>
         document.getElementById('generate-button').addEventListener('click', async () => {
             const container = document.getElementById('svg-container');
-            container.innerHTML = '<p>Loading...</p>';
+            container.innerHTML = '<p>creating...</p>';
 
             try {
                 const response = await fetch('/api/generate-svg', {
@@ -40,10 +41,10 @@
                 let svgBase64 = data.svg.trim();
                 svgBase64 = svgBase64.replace(/```/g, '').replace(/plaintext/g, '').replace(/markdown/g, '').trim();
 
-                container.innerHTML = `<img src="${svgBase64}" alt="Generated SVG" />`;
+                container.innerHTML = `<img src="${svgBase64}" alt="svg error" />`;
             } catch (error) {
                 console.error('Error:', error);
-                container.innerHTML = '<p>Error generating SVG.</p>';
+                container.innerHTML = '<p>api error.</p>';
             }
         });
     </script>
