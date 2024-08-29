@@ -35,6 +35,8 @@
     <h1>64s Generator</h1>
     <h2>64s are 64x64 ai created svg pieces stored in base64 on the blockchain</h2>
     <button id="generate-button">Generate</button>
+    <button id="mint-button" disabled>Mint</button>
+    <input type="hidden" id="svg-base64" />
     <div class="svg-container" id="svg-container">
         <p>errors are common, but so are 64s</p>
     </div>
@@ -43,6 +45,7 @@
     <script>
         document.getElementById('generate-button').addEventListener('click', async () => {
             const container = document.getElementById('svg-container');
+            const svgBase64Input = document.getElementById('svg-base64');
             container.innerHTML = '<p>creating...</p>';
 
             try {
@@ -54,10 +57,37 @@
                 let svgBase64 = data.svg.trim();
                 svgBase64 = svgBase64.replace(/```/g, '').replace(/plaintext/g, '').replace(/markdown/g, '').trim();
 
+                svgBase64Input.value = svgBase64;
                 container.innerHTML = `<img src="${svgBase64}" alt="svg error" />`;
+                document.getElementById('mint-button').disabled = false;
             } catch (error) {
                 console.error('Error:', error);
                 container.innerHTML = '<p>api error.</p>';
+            }
+        });
+
+        document.getElementById('mint-button').addEventListener('click', async () => {
+            const svgBase64 = document.getElementById('svg-base64').value;
+            if (!svgBase64) {
+                alert('Generate an SVG first!');
+                return;
+            }
+
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                const account = accounts[0];
+
+                const contractAddress = 'YOUR_CONTRACT_ADDRESS';
+                const contractABI = YOUR_CONTRACT_ABI;
+
+                const web3 = new Web3(ethereum);
+                const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+                await contract.methods.mint64(svgBase64).send({ from: account });
+                alert('Minted successfully!');
+            } catch (error) {
+                console.error('Minting error:', error);
+                alert('Minting failed.');
             }
         });
     </script>
