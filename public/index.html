@@ -46,6 +46,7 @@
 
     <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
     <script>
+        import contractABI from '/public/abi.json'
         document.getElementById('generate-button').addEventListener('click', async () => {
             const container = document.getElementById('svg-container');
             const svgBase64Input = document.getElementById('svg-base64');
@@ -84,10 +85,6 @@
                 const account = await signer.getAddress();
 
                 const contractAddress = '0x83c1408CFC19Fe4a2126A01b917a3620FCcAdD93'; // Replace with your contract address
-
-                // Fetch the contract ABI
-                const response = await fetch('/public/abi.json');
-                const contractABI = await response.json();
 
                 const infuraProvider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/ef929a0b34fa45c6b8758c57145b96b5'); // Replace with your Infura project ID
                 const contract = new ethers.Contract(contractAddress, contractABI, infuraProvider);
